@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -103,6 +103,12 @@ vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 -- vim.o.relativenumber = true
+
+-- Set indentation to something normal.
+vim.opt.expandtab = true -- use spaces instead of tabs
+vim.opt.shiftwidth = 4 -- indentation width
+vim.opt.tabstop = 4 -- how many spaces a <Tab> counts for
+vim.opt.softtabstop = 4 -- how many spaces <Tab> inserts in insert mode
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
