@@ -677,7 +677,9 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {
+          cmd = { '/usr/bin/clangd', '--background-index', '--clang-tidy' },
+        },
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
@@ -720,6 +722,9 @@ require('lazy').setup({
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
+      ensure_installed = vim.tbl_filter(function(s)
+        return s ~= 'clangd'
+      end, ensure_installed)
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
       })
@@ -739,6 +744,30 @@ require('lazy').setup({
           end,
         },
       }
+
+      -- Manually setup clangd using the system binary
+      do
+        local cfg = servers['clangd']
+        if cfg then
+          -- reuse the same capabilities you created above:
+          cfg.capabilities = vim.tbl_deep_extend('force', {}, capabilities or {}, cfg.capabilities or {})
+          cfg.cmd = cfg.cmd or { '/usr/bin/clangd' }
+
+          -- Start clangd without lspconfig (no vim.lsp.config — works on 0.10/0.11)
+          local clang_core_cfg = {
+            name = 'clangd',
+            cmd = cfg.cmd or { '/usr/bin/clangd', '--background-index', '--clang-tidy' },
+            capabilities = cfg.capabilities,
+          }
+          vim.api.nvim_create_autocmd('FileType', {
+            pattern = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+            callback = function(ev)
+              local root = vim.fs.root(ev.buf, { 'compile_commands.json', '.clangd', '.git' }) or vim.uv.cwd()
+              vim.lsp.start(vim.tbl_deep_extend('force', clang_core_cfg, { root_dir = root }))
+            end,
+          })
+        end
+      end
     end,
   },
 
