@@ -116,6 +116,9 @@ vim.o.mouse = 'a'
 -- Don't show the mode, since it's already in the status line
 vim.o.showmode = false
 
+-- Enable the tab bar to be always visible.
+vim.o.showtabline = 2
+
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -726,7 +729,17 @@ require('lazy').setup({
         return s ~= 'clangd'
       end, ensure_installed)
       vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
+        -- LSP servers
+        'lua-language-server',
+        'pyright',
+        'typescript-language-server',
+        'tailwindcss-language-server',
+
+        -- Formatters
+        'black',
+        'stylua',
+        'prettier',
+        'prettierd',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -804,10 +817,10 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'isort', 'black' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
@@ -870,7 +883,7 @@ require('lazy').setup({
         -- <c-k>: Toggle signature help
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
-        preset = 'default',
+        preset = 'super-tab',
 
         -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
