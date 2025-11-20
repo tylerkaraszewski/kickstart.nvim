@@ -736,7 +736,6 @@ require('lazy').setup({
         'tailwindcss-language-server',
 
         -- Formatters
-        'black',
         'stylua',
         'prettier',
         'prettierd',
