@@ -10,6 +10,14 @@ return {
         directory = '',
         file = 'session.vim',
       }
+      -- Commands:
+      vim.api.nvim_create_user_command('SessionSave', function()
+        MiniSessions.write(MiniSessions.config.file)
+      end, {})
+
+      vim.api.nvim_create_user_command('SessionLoad', function()
+        MiniSessions.read()
+      end, {})
     end,
   },
 }
