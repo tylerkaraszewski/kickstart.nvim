@@ -110,6 +110,9 @@ vim.opt.shiftwidth = 4 -- indentation width
 vim.opt.tabstop = 4 -- how many spaces a <Tab> counts for
 vim.opt.softtabstop = 4 -- how many spaces <Tab> inserts in insert mode
 
+-- When displaying regular text, break between words.
+vim.opt.linebreak = true
+
 -- But only two for JS.
 vim.api.nvim_create_autocmd('FileType', {
   pattern = {
