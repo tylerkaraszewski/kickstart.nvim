@@ -110,6 +110,21 @@ vim.opt.shiftwidth = 4 -- indentation width
 vim.opt.tabstop = 4 -- how many spaces a <Tab> counts for
 vim.opt.softtabstop = 4 -- how many spaces <Tab> inserts in insert mode
 
+-- But only two for JS.
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = {
+    'javascript',
+    'javascriptreact',
+    'typescript',
+    'typescriptreact',
+  },
+  callback = function()
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+  end,
+})
+
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
 
@@ -792,6 +807,9 @@ require('lazy').setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        javascriptreaact = { 'prettierd', 'prettier', stop_after_first = true },
+        typescript = { 'prettierd', 'prettier', stop_after_first = true },
+        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
