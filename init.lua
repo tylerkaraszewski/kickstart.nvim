@@ -110,16 +110,20 @@ vim.opt.shiftwidth = 4 -- indentation width
 vim.opt.tabstop = 4 -- how many spaces a <Tab> counts for
 vim.opt.softtabstop = 4 -- how many spaces <Tab> inserts in insert mode
 
+-- This should be on by default anyway, but the defult state is a bit unclear, so lets just set it expressly.
+vim.opt.termguicolors = true
+
 -- When displaying regular text, break between words.
 vim.opt.linebreak = true
 
--- But only two for JS.
+-- But only two for JS and lua.
 vim.api.nvim_create_autocmd('FileType', {
   pattern = {
     'javascript',
     'javascriptreact',
     'typescript',
     'typescriptreact',
+    'lua',
   },
   callback = function()
     vim.opt_local.shiftwidth = 2
